@@ -1,9 +1,15 @@
 import asyncio
+import logging
+
+from yt_summarize_bot.config import Database
+from yt_summarize_bot.redis_client import RedisClient
+
+log = logging.getLogger(__name__)
 
 
 class MemoryStorage:
-    def __init__(self):
-        self.data = {}
+    def __init__(self) -> None:
+        self.data: dict[str, list[str]] = {}
 
     async def is_inserted(self, var: str, id: str | int) -> bool:
         return str(id) in self.data.get(var, [])
@@ -28,62 +34,23 @@ class MemoryStorage:
         return True
 
 
-try:
-    from redis.asyncio import Redis
-
-    from yt_summarize_bot.config import Database
-
-    class RedisClient:
-        def __init__(self, host: str, port: int, password: str | None):
-            self.db = Redis(
-                host=host,
-                port=port,
-                password=password,
-                ssl=True if password else False,
-                decode_responses=True,
-            )
-
-        def _s_l(self, text: str) -> list[str]:
-            return text.split(" ") if text else []
-
-        def _l_s(self, lst: list[str]) -> str:
-            return " ".join(lst).strip()
-
-        async def is_inserted(self, var: str, id: str | int) -> bool:
-            users = await self.fetch_all(var)
-            return str(id) in users
-
-        async def insert(self, var: str, id: str | int) -> bool:
-            var = str(var)
-            id = str(id)
-            users = await self.fetch_all(var)
-            if id not in users:
-                users.append(id)
-                await self.db.set(var, self._l_s(users))
-            return True
-
-        async def fetch_all(self, var: str) -> list[str]:
-            users = await self.db.get(var)
-            return self._s_l(users) if users else []
-
-        async def delete(self, var: str, id: str | int) -> bool:
-            var = str(var)
-            id = str(id)
-            users = await self.fetch_all(var)
-            if id in users:
-                users.remove(id)
-                await self.db.set(var, self._l_s(users))
-            return True
-
+# Initialize database based on environment variable
+if Database.DATABASE_TYPE.lower() == "redis":
     try:
         db: RedisClient | MemoryStorage = RedisClient(
             host=Database.REDIS_HOST or "localhost",
             port=Database.REDIS_PORT or 6379,
             password=Database.REDIS_PASSWORD,
         )
+        # Test Redis connection
         asyncio.get_event_loop().run_until_complete(db.fetch_all("test"))
-    except Exception:
+        log.info("Connected to Redis database successfully")
+    except (ConnectionError, TimeoutError, OSError) as e:
+        log.warning("Failed to connect to Redis, falling back to memory storage: %s", e)
         db = MemoryStorage()
-
-except ImportError:
-    db: RedisClient | MemoryStorage = MemoryStorage()  # type: ignore
+    except (ValueError, TypeError) as e:
+        log.warning("Invalid Redis configuration, falling back to memory storage: %s", e)
+        db = MemoryStorage()
+else:
+    log.info("Using memory storage (DATABASE_TYPE=%s)", Database.DATABASE_TYPE)
+    db = MemoryStorage()

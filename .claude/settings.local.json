@@ -15,7 +15,8 @@
       "Bash(chmod:*)",
       "Bash(make:*)",
       "Bash(poetry:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []
