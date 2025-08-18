@@ -8,11 +8,29 @@ YouTube Video Summarizer Bot - A Telegram bot that summarizes YouTube videos by 
 
 ## Environment Setup
 
-Required environment variables:
-- `BOT_TOKEN` - Telegram bot token
-- `AI_API_KEY` - OpenAI-compatible API key (optional, defaults to free service)
-- `AUTH_USER_ID` - Admin Telegram user ID for restricted commands
-- `REDIS_HOST`, `REDIS_PORT`, `REDIS_PASSWORD` - Redis configuration (optional, falls back to memory storage)
+### Environment Files
+- **`.env.example`** - Template with all available configuration options (committed to git)
+- **`.env`** - Actual configuration with credentials (gitignored, never commit this)
+- Configuration is loaded via `python-dotenv` in `config.py`
+
+### Required Credentials (Bot won't start without these):
+- `BOT_TOKEN` - Telegram bot token from [@BotFather](https://t.me/botfather)
+- `AUTH_USER_ID` - Your Telegram user ID from [@userinfobot](https://t.me/userinfobot)
+
+### Optional Configuration:
+- `AI_API_KEY` - OpenAI-compatible API key (defaults to free Pollinations AI service)
+- `AI_MODEL_NAME` - Model name (default: gemini-2.0-flash)
+- `AI_API_URL` - API endpoint (default: https://text.pollinations.ai/openai)
+- `REDIS_HOST`, `REDIS_PORT`, `REDIS_PASSWORD` - Redis configuration (falls back to in-memory storage)
+
+### Setting Up Environment
+```bash
+# Create .env from template
+cp .env.example .env
+
+# Edit .env with your credentials
+nano .env  # or use your preferred editor
+```
 
 ## Development Commands
 
@@ -37,19 +55,36 @@ poetry run yt-summarize-bot
 ```
 
 ### Docker Setup
+
+#### Production
 ```bash
 # Build and run with Docker Compose
-docker-compose up -d --build
+docker compose up -d --build
 
 # View logs
-docker-compose logs -f bot
+docker compose logs -f bot
 
 # Stop services
-docker-compose down
+docker compose down
+```
 
-# Run without Redis (memory storage only)
-docker build -t yt-summarizer .
-docker run --env-file .env yt-summarizer
+#### Development (with dev tools)
+```bash
+# Build and run development container
+docker compose -f docker-compose.dev.yaml up -d --build
+
+# Run tests in container
+docker compose -f docker-compose.dev.yaml run --rm bot poetry run pytest
+
+# Run linting in container
+docker compose -f docker-compose.dev.yaml run --rm bot poetry run black .
+docker compose -f docker-compose.dev.yaml run --rm bot poetry run ruff check .
+
+# Run type checking in container
+docker compose -f docker-compose.dev.yaml run --rm bot poetry run mypy .
+
+# Access container shell for debugging
+docker compose -f docker-compose.dev.yaml exec bot /bin/bash
 ```
 
 ### Development Tools

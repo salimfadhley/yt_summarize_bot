@@ -1,0 +1,53 @@
+services:
+  bot:
+    build:
+      context: .
+      target: yt_summarize_bot_dev
+    container_name: yt-summarizer-bot-dev
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+    depends_on:
+      - redis
+    volumes:
+      # Mount source code for live development
+      - ./yt_summarize_bot:/app/yt_summarize_bot
+      - ./temp:/app/temp
+    networks:
+      - bot-network
+    # Override command for development - you can run tests, linting, etc.
+    # command: poetry run pytest
+    # command: poetry run black --check .
+    # command: poetry run mypy .
+
+  redis:
+    image: redis:7-alpine
+    container_name: yt-summarizer-redis-dev
+    restart: unless-stopped
+    command: >
+      sh -c '
+        if [ -n "$${REDIS_PASSWORD}" ]; then
+          redis-server --requirepass "$${REDIS_PASSWORD}"
+        else
+          redis-server
+        fi
+      '
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data-dev:/data
+    networks:
+      - bot-network
+
+volumes:
+  redis-data-dev:
+
+networks:
+  bot-network:
+    driver: bridge
