@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="176dee3e-aa62-4121-a897-a0a7f710ea8e" name="Changes" comment="Update Docker configuration and refine Python version constraints in pyproject.toml">
+    <list default="true" id="176dee3e-aa62-4121-a897-a0a7f710ea8e" name="Changes" comment="Refactor project structure and enhance development setup with Makefile and setup script">
       <change afterPath="$PROJECT_DIR$/.claude/settings.local.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
@@ -136,7 +136,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1755551395323</updated>
-      <workItem from="1755551396536" duration="4155000" />
+      <workItem from="1755551396536" duration="4635000" />
     </task>
     <task id="LOCAL-00001" summary="Update Docker configuration and refine Python version constraints in pyproject.toml">
       <option name="closed" value="true" />
@@ -154,6 +154,10 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Update Docker configuration and refine Python version constraints in pyproject.toml" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update Docker configuration and refine Python version constraints in pyproject.toml" />
+    <MESSAGE value="Refactor project structure and enhance development setup with Makefile and setup script" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor project structure and enhance development setup with Makefile and setup script" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/yt_summarize_bot$main.coverage" NAME="main Coverage Results" MODIFIED="1755555515575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/yt_summarize_bot" />
   </component>
 </project>

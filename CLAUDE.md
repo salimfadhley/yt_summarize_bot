@@ -114,6 +114,7 @@ make lint        # Run linting
 make format      # Format code with black
 make typecheck   # Run mypy type checking
 make precommit   # Run all pre-commit hooks
+make security    # Run security scan with bandit
 make clean       # Clean up cache and build files
 make update      # Update all dependencies
 ```
@@ -209,6 +210,40 @@ yt_summarize_bot/
 3. If no captions, downloads audio and transcribes using Pollinations AI audio API
 4. Sends transcript to LLM (Pollinations AI or configured OpenAI-compatible API)
 5. Returns formatted summary using Telegram markdown
+
+## CI/CD and Quality Assurance
+
+### GitHub Actions Workflows
+
+The project includes automated CI/CD pipelines:
+
+1. **Code Quality** (runs on every commit):
+   - Black code formatting check
+   - Ruff linting
+   - MyPy type checking
+   - YAML validation
+   - Bandit security scanning
+
+2. **CI Pipeline** (runs on main/develop branches):
+   - Full test suite
+   - Docker build verification
+   - Multi-stage Docker testing
+
+3. **Dependabot Integration**:
+   - Automatic dependency updates
+   - Auto-merge for passing updates
+   - Weekly schedule for Python, GitHub Actions, and Docker
+
+### Local Quality Checks
+
+All GitHub Actions checks can be run locally:
+```bash
+make format      # Black formatting
+make lint        # Ruff linting  
+make typecheck   # MyPy type checking
+make security    # Bandit security scan
+make precommit   # All pre-commit hooks
+```
 
 ### Key Dependencies
 

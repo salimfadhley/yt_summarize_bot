@@ -1,0 +1,85 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ "**" ]  # Run on all branches
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  lint-and-format:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: 1.8.5
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-3.12-${{ hashFiles('**/poetry.lock') }}
+        restore-keys: |
+          venv-${{ runner.os }}-3.12-
+
+    - name: Install dependencies
+      run: poetry install --with dev --no-interaction
+
+    - name: Check code formatting with Black
+      run: |
+        echo "Checking Python code formatting..."
+        poetry run black --check --diff --color .
+      
+    - name: Run Ruff linting
+      run: |
+        echo "Running Ruff linter..."
+        poetry run ruff check --output-format=github .
+
+    - name: Run MyPy type checking
+      run: |
+        echo "Running MyPy type checking..."
+        poetry run mypy yt_summarize_bot --show-error-codes
+
+    - name: Check YAML files
+      run: |
+        echo "Validating YAML files..."
+        python -c "
+        import yaml
+        import glob
+        for file in glob.glob('**/*.yaml', recursive=True) + glob.glob('**/*.yml', recursive=True):
+            print(f'Checking {file}')
+            with open(file) as f:
+                yaml.safe_load(f)
+        print('All YAML files are valid')
+        "
+
+  security-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run Bandit security scan
+      uses: tj-actions/bandit@v5.1
+      with:
+        options: "-r yt_summarize_bot/ -f json -o bandit-report.json"
+        
+    - name: Upload Bandit scan results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: bandit-report
+        path: bandit-report.json

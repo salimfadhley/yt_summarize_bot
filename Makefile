@@ -22,6 +22,7 @@ help:
 	@echo "  make lint          - Run linting (ruff)"
 	@echo "  make format        - Format code with black"
 	@echo "  make typecheck     - Run type checking with mypy"
+	@echo "  make security      - Run security scan with bandit"
 	@echo "  make precommit     - Run all pre-commit hooks"
 	@echo "  make run           - Run the bot locally"
 	@echo "  make docker-build  - Build Docker image"
@@ -114,6 +115,11 @@ format:
 typecheck:
 	@echo "Running type checking..."
 	poetry run mypy yt_summarize_bot
+
+# Security scanning
+security:
+	@echo "Running security scan..."
+	poetry run bandit -r yt_summarize_bot/ -f console
 
 # Run all pre-commit hooks
 precommit:
