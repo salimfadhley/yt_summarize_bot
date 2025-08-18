@@ -6,13 +6,12 @@ authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 license = "MIT"
 packages = [{include = "yt_summarize_bot"}]
-python = "^3.12"
 
 [tool.poetry.scripts]
 yt-summarize-bot = "yt_summarize_bot.main:main"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = ">=3.12,<3.14"
 aiogram = "^3.15.0"
 speechrecognition = "^3.11.0"
 pytube = "^15.0.0"
