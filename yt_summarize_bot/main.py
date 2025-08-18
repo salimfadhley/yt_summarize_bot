@@ -12,8 +12,8 @@ from aiogram.filters import Command
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from config import Telegram, Ai
-from database import db
+from yt_summarize_bot.config import Telegram, Ai
+from yt_summarize_bot.database import db
 
 logging.basicConfig(level=logging.INFO)
 

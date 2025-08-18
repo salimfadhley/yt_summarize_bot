@@ -29,7 +29,7 @@ class MemoryStorage:
 
 try:
     from redis.asyncio import Redis
-    from config import Database
+    from yt_summarize_bot.config import Database
 
     class RedisClient:
         def __init__(self, host: str, port: int, password: Optional[str]):
