@@ -14,6 +14,27 @@ Welcome to the YouTube Video Summarizer Bot! This bot helps you to get a quick s
 ### Free Bot Hosting
 If you want free bot hosting, checkout this article:
 https://github.com/Harshit-shrivastav/Free-Telegram-bot-hosting
+## Quick Start - Local Development
+
+The fastest way to get started with local development is using our automation tools:
+
+```bash
+# Clone the repository
+git clone https://github.com/Harshit-shrivastav/Youtube-Summarizer-Bot.git
+cd Youtube-Summarizer-Bot
+
+# Run automated setup (installs everything you need)
+./setup.sh
+
+# Edit your credentials
+nano .env  # Add your BOT_TOKEN and AUTH_USER_ID
+
+# Run the bot
+make run
+```
+
+The `Makefile` provides convenient commands for all common development tasks. Run `make help` to see all available commands.
+
 ## Installation
 
 ### Prerequisites
@@ -46,7 +67,7 @@ https://github.com/Harshit-shrivastav/Free-Telegram-bot-hosting
     # Required
     BOT_TOKEN=your_telegram_bot_token_here
     AUTH_USER_ID=your_telegram_user_id_here
-    
+
     # Optional (uses free service if not provided)
     AI_API_KEY=your_api_key_here
     ```
@@ -68,7 +89,33 @@ The `.env` file stores sensitive configuration like API keys and tokens. Here's 
 
 The bot will not start without the required values (BOT_TOKEN and AUTH_USER_ID) in your `.env` file.
 
-### Using Poetry (Local Development)
+### Local Development with Makefile
+
+The project includes a `Makefile` that automates common development tasks:
+
+| Command | Description |
+|---------|-------------|
+| `make dev` | Complete development setup from scratch |
+| `make setup` | Install dependencies and pre-commit hooks |
+| `make run` | Run the bot locally |
+| `make test` | Run all tests |
+| `make format` | Format code with black |
+| `make lint` | Check code with ruff |
+| `make typecheck` | Type check with mypy |
+| `make clean` | Remove all cache and build files |
+| `make help` | Show all available commands |
+
+#### Quick Setup (Automated)
+
+```bash
+# Option 1: Using the setup script (recommended for first-time setup)
+./setup.sh
+
+# Option 2: Using Make
+make dev
+```
+
+#### Manual Setup
 
 1. Install Poetry and dependencies:
     ```bash
@@ -81,9 +128,9 @@ The bot will not start without the required values (BOT_TOKEN and AUTH_USER_ID) 
     export BOT_TOKEN='your_telegram_bot_token'  # REQUIRED
     export AUTH_USER_ID='your_telegram_user_id' # REQUIRED
     export AI_API_KEY='google-genai_api_key'     # optional
-    export REDIS_HOST='your_redis_host'          # optional 
+    export REDIS_HOST='your_redis_host'          # optional
     export REDIS_PORT='your_redis_port'          # optional
-    export REDIS_PASSWORD='your_redis_password'  # optional 
+    export REDIS_PASSWORD='your_redis_password'  # optional
     ```
 
 3. Run the bot:
@@ -118,7 +165,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Telethon](https://github.com/LonamiWebs/Telethon) - Telegram client library.
 - [Pytube](https://github.com/pytube/pytube) - YouTube video downloader.
 - [SpeechRecognition](https://github.com/Uberi/speech_recognition) - Library for performing speech recognition.
-- [Gemini AI](https://gemini.google.com/) - GenAI Api for summarization 
+- [Gemini AI](https://gemini.google.com/) - GenAI Api for summarization
 
 ## Contact
 

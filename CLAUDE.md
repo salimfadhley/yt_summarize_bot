@@ -32,9 +32,55 @@ cp .env.example .env
 nano .env  # or use your preferred editor
 ```
 
+## Quick Start for Local Development
+
+```bash
+# 1. Clone and enter the project
+git clone <repo-url> && cd yt_summarize_bot
+
+# 2. Run automated setup (installs Poetry, dependencies, pre-commit hooks)
+./setup.sh
+
+# 3. Configure credentials
+nano .env  # Add BOT_TOKEN and AUTH_USER_ID
+
+# 4. Run the bot
+make run
+```
+
 ## Development Commands
 
-### Poetry Setup
+### Makefile Overview
+
+The project includes a comprehensive `Makefile` that standardizes all development workflows. This ensures consistent development practices across different environments and developers.
+
+**Key Benefits:**
+- Single command for complex multi-step operations
+- Consistent commands across all developers
+- Built-in dependency checking
+- Automatic error handling
+
+**Most Used Commands:**
+- `make dev` - Complete setup from scratch (clean install)
+- `make run` - Run the bot with environment checking
+- `make format` - Auto-format all code
+- `make test` - Run full test suite
+- `make help` - See all available commands
+
+### Local Development Setup
+
+#### Automated Setup
+```bash
+# Full automated setup (recommended)
+./setup.sh
+
+# Or using Make
+make dev         # Full dev setup from scratch
+make setup       # Install deps + pre-commit hooks
+make install     # Just install dependencies
+```
+
+#### Manual Poetry Setup
 ```bash
 # Install Poetry (if not already installed)
 curl -sSL https://install.python-poetry.org | python3 -
@@ -52,6 +98,24 @@ poetry add package-name
 poetry run python -m yt_summarize_bot
 # or
 poetry run yt-summarize-bot
+# or
+make run
+# or
+./run.sh
+```
+
+#### Make Commands
+```bash
+make help        # Show all available commands
+make dev         # Full development setup
+make run         # Run the bot
+make test        # Run tests
+make lint        # Run linting
+make format      # Format code with black
+make typecheck   # Run mypy type checking
+make precommit   # Run all pre-commit hooks
+make clean       # Clean up cache and build files
+make update      # Update all dependencies
 ```
 
 ### Docker Setup

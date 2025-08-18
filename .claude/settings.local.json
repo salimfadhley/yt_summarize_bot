@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(git add:*)",
+      "Bash(git push:*)",
+      "Bash(poetry run black:*)",
+      "Bash(docker-compose build:*)",
+      "Bash(docker compose:*)",
+      "Bash(cp:*)",
+      "Bash(poetry install:*)",
+      "Bash(poetry run:*)",
+      "Bash(poetry add:*)",
+      "Bash(chmod:*)",
+      "Bash(make:*)",
+      "Bash(poetry:*)",
+      "Bash(rm:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
