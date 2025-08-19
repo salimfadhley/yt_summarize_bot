@@ -11,6 +11,7 @@ import yt_dlp
 from aiogram import Bot, Dispatcher, types
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import Command
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from yt_dlp.utils import DownloadError, ExtractorError
@@ -27,6 +28,76 @@ from yt_summarize_bot.exceptions import (
 )
 
 log = logging.getLogger(__name__)
+
+
+def escape_markdown_v2(text: str) -> str:
+    """Escape special characters for Telegram MarkdownV2."""
+    # Characters that need escaping in Telegram MarkdownV2
+    special_chars = [
+        "_",
+        "*",
+        "[",
+        "]",
+        "(",
+        ")",
+        "~",
+        "`",
+        ">",
+        "#",
+        "+",
+        "-",
+        "=",
+        "|",
+        "{",
+        "}",
+        ".",
+        "!",
+    ]
+
+    for char in special_chars:
+        text = text.replace(char, f"\\{char}")
+
+    return text
+
+
+async def safe_send_message(message: types.Message, text: str) -> types.Message:
+    """Safely send a message, falling back to plain text if MarkdownV2 parsing fails."""
+    try:
+        result = await message.answer(text, parse_mode=ParseMode.MARKDOWN_V2)
+        return result
+    except TelegramBadRequest as e:
+        if "can't parse entities" in str(e).lower():
+            log.warning("MarkdownV2 parsing failed, sending as escaped text: %s", e)
+            escaped_text = escape_markdown_v2(text)
+            try:
+                result = await message.answer(escaped_text, parse_mode=ParseMode.MARKDOWN_V2)
+                return result
+            except TelegramBadRequest:
+                log.warning("Even escaped MarkdownV2 failed, sending as plain text")
+                result = await message.answer(text, parse_mode=None)
+                return result
+        else:
+            raise
+
+
+async def safe_edit_message(message: types.Message, text: str) -> bool:
+    """Safely edit a message, falling back to plain text if MarkdownV2 parsing fails."""
+    try:
+        await message.edit_text(text, parse_mode=ParseMode.MARKDOWN_V2)
+        return True
+    except TelegramBadRequest as e:
+        if "can't parse entities" in str(e).lower():
+            log.warning("MarkdownV2 parsing failed, editing as escaped text: %s", e)
+            escaped_text = escape_markdown_v2(text)
+            try:
+                await message.edit_text(escaped_text, parse_mode=ParseMode.MARKDOWN_V2)
+                return True
+            except TelegramBadRequest:
+                log.warning("Even escaped MarkdownV2 failed, editing as plain text")
+                await message.edit_text(text, parse_mode=None)
+                return True
+        else:
+            raise
 
 
 def _get_subtitle_for_language(subtitles: dict, automatic_captions: dict, lang: str) -> str | None:
@@ -57,7 +128,9 @@ def load_system_prompt() -> str:
 
 
 try:
-    bot = Bot(token=Telegram.BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN))
+    bot = Bot(
+        token=Telegram.BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN_V2)
+    )
 except Exception as e:
     if "Token is invalid" in str(e) or "TokenValidationError" in str(e):
         print("ERROR: Invalid Telegram Bot Token")
@@ -399,16 +472,16 @@ async def handle_message(message: types.Message) -> None:
             or "failed" in transcript_text.lower()
         ):
             log.warning("Failed to extract transcript for URL %s: %s", url, transcript_text)
-            await status_msg.edit_text(transcript_text)
+            await safe_edit_message(status_msg, transcript_text)
         else:
             log.info("Successfully extracted transcript for URL %s, generating summary", url)
             try:
                 summary = await get_llm_response(transcript_text)
                 log.info("Successfully generated summary for URL %s", url)
-                await status_msg.edit_text(summary)
+                await safe_edit_message(status_msg, summary)
             except SummarizationError as e:
                 log.warning("Failed to generate summary for URL %s: %s", url, e)
-                await status_msg.edit_text(f"Could not generate summary: {str(e)}")
+                await safe_edit_message(status_msg, f"Could not generate summary: {str(e)}")
     else:
         log.debug("Non-YouTube URL received from user %s: %s", user_id, url)
         await message.answer("Please send a valid YouTube link.")
