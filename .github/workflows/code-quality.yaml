@@ -40,17 +40,22 @@ jobs:
     - name: Check code formatting with Black
       run: |
         echo "Checking Python code formatting..."
-        poetry run black --check --diff --color .
+        poetry run black --check --diff --color src/
       
     - name: Run Ruff linting
       run: |
         echo "Running Ruff linter..."
-        poetry run ruff check --output-format=github .
+        poetry run ruff check --output-format=github src/
 
     - name: Run MyPy type checking
       run: |
         echo "Running MyPy type checking..."
-        poetry run mypy yt_summarize_bot --show-error-codes
+        poetry run mypy src/ --show-error-codes
+
+    - name: Run unit tests
+      run: |
+        echo "Running unit tests..."
+        poetry run pytest src/test_yt_summarize_bot/ -v --tb=short -m "not integration"
 
     - name: Check YAML files
       run: |
@@ -75,7 +80,7 @@ jobs:
     - name: Run Bandit security scan
       uses: tj-actions/bandit@v5.1
       with:
-        options: "-r yt_summarize_bot/ -f json -o bandit-report.json"
+        options: "-r src/yt_summarize_bot/ -f json -o bandit-report.json"
         
     - name: Upload Bandit scan results
       uses: actions/upload-artifact@v4

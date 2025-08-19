@@ -31,3 +31,14 @@ repos:
       - id: check-added-large-files
         args: [--maxkb=1000]
       - id: check-merge-conflict
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: poetry run pytest
+        language: system
+        types: [python]
+        pass_filenames: false
+        args: [-v, --tb=short, -m, "not integration"]
+        always_run: true

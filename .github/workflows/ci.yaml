@@ -44,17 +44,16 @@ jobs:
       run: poetry install --with dev
 
     - name: Check code formatting with Black
-      run: poetry run black --check --diff .
+      run: poetry run black --check --diff src/
 
     - name: Run Ruff linting
-      run: poetry run ruff check .
+      run: poetry run ruff check src/
 
     - name: Run MyPy type checking
-      run: poetry run mypy yt_summarize_bot
+      run: poetry run mypy src/
 
     - name: Run tests
-      run: poetry run pytest --verbose
-      continue-on-error: true  # Allow tests to fail while we're setting up
+      run: poetry run pytest src/test_yt_summarize_bot/ -v --tb=short -m "not integration"
 
   docker-build:
     runs-on: ubuntu-latest
