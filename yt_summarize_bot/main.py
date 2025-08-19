@@ -16,6 +16,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from yt_dlp.utils import DownloadError, ExtractorError
 
 from yt_summarize_bot.config import Ai, Telegram
+from yt_summarize_bot.constants import SUBTITLE_LANGUAGES
 from yt_summarize_bot.database import db
 from yt_summarize_bot.exceptions import (
     CaptionExtractionError,
@@ -26,23 +27,6 @@ from yt_summarize_bot.exceptions import (
 )
 
 log = logging.getLogger(__name__)
-
-# Supported subtitle languages in priority order
-SUBTITLE_LANGUAGES = [
-    "en",
-    "ja",
-    "ko",
-    "de",
-    "fr",
-    "ru",
-    "it",
-    "es",
-    "pl",
-    "uk",
-    "nl",
-    "zh-TW",
-    "zh-CN",
-]
 
 
 def _get_subtitle_for_language(subtitles: dict, automatic_captions: dict, lang: str) -> str | None:
