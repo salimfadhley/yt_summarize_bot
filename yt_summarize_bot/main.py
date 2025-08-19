@@ -13,6 +13,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import Command
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+from yt_dlp.utils import DownloadError, ExtractorError
 
 from yt_summarize_bot.config import Ai, Telegram
 from yt_summarize_bot.database import db
@@ -25,6 +26,41 @@ from yt_summarize_bot.exceptions import (
 )
 
 log = logging.getLogger(__name__)
+
+# Supported subtitle languages in priority order
+SUBTITLE_LANGUAGES = [
+    "en",
+    "ja",
+    "ko",
+    "de",
+    "fr",
+    "ru",
+    "it",
+    "es",
+    "pl",
+    "uk",
+    "nl",
+    "zh-TW",
+    "zh-CN",
+]
+
+
+def _get_subtitle_for_language(subtitles: dict, automatic_captions: dict, lang: str) -> str | None:
+    """Try to fetch subtitles for a specific language."""
+    try:
+        if lang in subtitles:
+            sub_url = subtitles[lang][0]["url"]
+            response = requests.get(sub_url, timeout=10)
+            response.raise_for_status()
+            return response.text
+        elif lang in automatic_captions:
+            sub_url = automatic_captions[lang][0]["url"]
+            response = requests.get(sub_url, timeout=10)
+            response.raise_for_status()
+            return response.text
+    except (requests.exceptions.RequestException, KeyError, IndexError) as e:
+        log.debug("Failed to fetch subtitles for language %s: %s", lang, e)
+    return None
 
 
 def load_system_prompt() -> str:
@@ -128,22 +164,12 @@ async def extract_youtube_transcript(youtube_url: str) -> str:
             "skip_download": True,
             "writesubtitles": True,
             "writeautomaticsub": True,
-            "subtitleslangs": [
-                "en",
-                "ja",
-                "ko",
-                "de",
-                "fr",
-                "ru",
-                "it",
-                "es",
-                "pl",
-                "uk",
-                "nl",
-                "zh-TW",
-                "zh-CN",
-            ],
+            "subtitleslangs": SUBTITLE_LANGUAGES,
             "outtmpl": "temp_sub.%(ext)s",
+            # Add headers to avoid bot detection
+            "http_headers": {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+            },
         }
 
         loop = asyncio.get_event_loop()
@@ -155,35 +181,10 @@ async def extract_youtube_transcript(youtube_url: str) -> str:
                 subtitles = info.get("subtitles", {})
                 automatic_captions = info.get("automatic_captions", {})
 
-                for lang in [
-                    "en",
-                    "ja",
-                    "ko",
-                    "de",
-                    "fr",
-                    "ru",
-                    "it",
-                    "es",
-                    "pl",
-                    "uk",
-                    "nl",
-                    "zh-TW",
-                    "zh-CN",
-                ]:
-                    try:
-                        if lang in subtitles:
-                            sub_url = subtitles[lang][0]["url"]
-                            response = requests.get(sub_url, timeout=10)
-                            response.raise_for_status()
-                            return response.text
-                        elif lang in automatic_captions:
-                            sub_url = automatic_captions[lang][0]["url"]
-                            response = requests.get(sub_url, timeout=10)
-                            response.raise_for_status()
-                            return response.text
-                    except (requests.exceptions.RequestException, KeyError, IndexError) as e:
-                        log.debug("Failed to fetch subtitles for language %s: %s", lang, e)
-                        continue
+                for lang in SUBTITLE_LANGUAGES:
+                    subtitle_text = _get_subtitle_for_language(subtitles, automatic_captions, lang)
+                    if subtitle_text:
+                        return subtitle_text
 
                 raise CaptionExtractionError("No captions found in any supported language")
 
@@ -203,7 +204,7 @@ async def extract_youtube_transcript(youtube_url: str) -> str:
             log.info("No captions available, falling back to audio transcription")
             return await download_audio_and_transcribe(youtube_url)
 
-    except yt_dlp.YoutubeDLError as e:
+    except (DownloadError, ExtractorError) as e:
         log.warning("YouTube-DL error during caption extraction: %s", e)
         return await download_audio_and_transcribe(youtube_url)
     except OSError as e:
@@ -229,6 +230,10 @@ async def download_audio_and_transcribe(youtube_url: str) -> str:
             ],
             "outtmpl": "temp_audio.%(ext)s",
             "keepvideo": False,
+            # Add headers to avoid bot detection
+            "http_headers": {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+            },
         }
 
         loop = asyncio.get_event_loop()
@@ -249,7 +254,7 @@ async def download_audio_and_transcribe(youtube_url: str) -> str:
         finally:
             if os.path.exists(wav_path):
                 os.remove(wav_path)
-    except yt_dlp.YoutubeDLError as e:
+    except (DownloadError, ExtractorError) as e:
         log.error("YouTube-DL error during audio download: %s", e)
         return f"YouTube download error: {str(e)}"
     except OSError as e:
