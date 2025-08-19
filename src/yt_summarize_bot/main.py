@@ -1,7 +1,6 @@
 import asyncio
 import json
 import logging
-import re
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
@@ -21,9 +20,16 @@ from yt_summarize_bot.exceptions import SummarizationError
 log = logging.getLogger(__name__)
 
 
-def get_video_id(url: str) -> str | None:
+def get_video_id(url: str | None) -> str | None:
     """Extract YouTube video ID from URL."""
+    if not url:
+        return None
+
     try:
+        # Only process YouTube URLs
+        if "youtube.com" not in url and "youtu.be" not in url:
+            return None
+
         # Handle different YouTube URL formats
         if "youtube.com" in url:
             parsed = urlparse(url)
@@ -31,11 +37,10 @@ def get_video_id(url: str) -> str | None:
             return query_params.get("v", [None])[0]
         elif "youtu.be" in url:
             parsed = urlparse(url)
-            return parsed.path[1:].split("?")[0]
+            path = parsed.path[1:] if parsed.path else ""
+            return path.split("?")[0] if path else None
         else:
-            # Try to extract video ID using regex as fallback
-            match = re.search(r"(?:v=|\/)([0-9A-Za-z_-]{11})", url)
-            return match.group(1) if match else None
+            return None
     except Exception as e:
         log.error("Error extracting video ID from URL %s: %s", url, e)
         return None
@@ -59,7 +64,7 @@ async def get_youtube_transcript(video_id: str) -> str | None:
                     try:
                         fetched = transcript.fetch()
                         return " ".join([item["text"] for item in fetched])
-                    except:
+                    except Exception:
                         continue
                 return None
 
