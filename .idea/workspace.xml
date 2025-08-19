@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="176dee3e-aa62-4121-a897-a0a7f710ea8e" name="Changes" comment="Implement logging configuration and enhance error handling for YouTube Summarizer Bot" />
+    <list default="true" id="176dee3e-aa62-4121-a897-a0a7f710ea8e" name="Changes" comment="Implement logging configuration and enhance error handling for YouTube Summarizer Bot">
+      <change afterPath="$PROJECT_DIR$/test_yt_summarize_bot/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/poetry.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yt_summarize_bot/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/yt_summarize_bot/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yt_summarize_bot/constants.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yt_summarize_bot/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/yt_summarize_bot/main.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -12,6 +21,13 @@
   </component>
   <component name="ComposerSettings">
     <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -75,6 +91,9 @@
   "keyToStringList": {
     "DatabaseDriversLRU": [
       "redis"
+    ],
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "TEXT"
     ]
   }
 }]]></component>
@@ -104,7 +123,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1755551395323</updated>
-      <workItem from="1755551396536" duration="9287000" />
+      <workItem from="1755551396536" duration="12839000" />
     </task>
     <task id="LOCAL-00001" summary="Update Docker configuration and refine Python version constraints in pyproject.toml">
       <option name="closed" value="true" />
@@ -137,6 +156,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/yt_summarize_bot$main.coverage" NAME="main Coverage Results" MODIFIED="1755560866524" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/yt_summarize_bot" />
-    <SUITE FILE_PATH="coverage/yt_summarize_bot$__main__.coverage" NAME="__main__ Coverage Results" MODIFIED="1755562591798" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/yt_summarize_bot" />
+    <SUITE FILE_PATH="coverage/yt_summarize_bot$__main__.coverage" NAME="__main__ Coverage Results" MODIFIED="1755565041263" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/yt_summarize_bot" />
   </component>
 </project>

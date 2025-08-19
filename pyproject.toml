@@ -5,7 +5,10 @@ description = "A Telegram bot that summarizes YouTube videos using AI"
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 license = "MIT"
-packages = [{include = "yt_summarize_bot"}]
+packages = [
+    {include = "yt_summarize_bot", from = "src"},
+    {include = "test_yt_summarize_bot", from = "src"}
+]
 
 [tool.poetry.scripts]
 yt-summarize-bot = "yt_summarize_bot.main:main"
@@ -13,14 +16,10 @@ yt-summarize-bot = "yt_summarize_bot.main:main"
 [tool.poetry.dependencies]
 python = ">=3.12,<3.14"
 aiogram = "^3.15.0"
-speechrecognition = "^3.11.0"
-pytube = "^15.0.0"
-pydub = "^0.25.1"
-youtube-transcript-api = "^0.6.3"
 redis = "^5.2.1"
 python-dotenv = "^1.0.1"
 aiohttp = "^3.11.11"
-yt-dlp = "^2024.12.23"
+youtube-transcript-api = "^0.6.3"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.10.0"
@@ -54,3 +53,4 @@ warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = false
 ignore_missing_imports = true
+mypy_path = "src"

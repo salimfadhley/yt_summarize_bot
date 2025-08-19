@@ -17,7 +17,8 @@
       "Bash(poetry:*)",
       "Bash(rm:*)",
       "Bash(grep:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(true)"
     ],
     "deny": [],
     "ask": []
