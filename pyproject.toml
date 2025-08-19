@@ -20,6 +20,8 @@ redis = "^5.2.1"
 python-dotenv = "^1.0.1"
 aiohttp = "^3.11.11"
 youtube-transcript-api = "^0.6.3"
+yt-dlp = "^2025.8.11"
+requests = "^2.32.5"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.10.0"

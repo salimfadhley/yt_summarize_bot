@@ -77,3 +77,19 @@ class Database:
     REDIS_HOST = os.environ.get("REDIS_HOST")
     REDIS_PORT = int(os.environ.get("REDIS_PORT", "6379"))
     REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
+
+
+class YouTube:
+    """Configuration for YouTube transcript extraction."""
+
+    COOKIES_FROM_BROWSER = _get_optional_env_var(
+        "YOUTUBE_COOKIES_FROM_BROWSER",
+        "",
+        "Browser to extract cookies from (chrome, firefox, safari, edge, etc.)",
+    )
+
+    COOKIEFILE = _get_optional_env_var(
+        "YOUTUBE_COOKIEFILE",
+        "",
+        "Path to cookies file (NetScape format)",
+    )

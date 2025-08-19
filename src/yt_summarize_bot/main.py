@@ -47,7 +47,13 @@ def get_video_id(url: str | None) -> str | None:
 
 
 async def get_youtube_transcript(video_id: str) -> str | None:
-    """Fetch YouTube video transcript."""
+    """
+    Fetch YouTube video transcript with fallback to yt-dlp.
+
+    First tries youtube-transcript-api for speed, then falls back to
+    yt-dlp for videos with access restrictions or transcripts disabled.
+    """
+    # First try: youtube-transcript-api (fast but limited)
     try:
         loop = asyncio.get_event_loop()
 
@@ -69,16 +75,48 @@ async def get_youtube_transcript(video_id: str) -> str | None:
                 return None
 
         transcript = await loop.run_in_executor(None, fetch_transcript)
-        return transcript  # type: ignore[no-any-return]
+        if transcript:
+            log.info("Successfully fetched transcript using youtube-transcript-api")
+            return transcript  # type: ignore[no-any-return]
+
     except NoTranscriptFound:
-        log.warning("No transcript found for video ID '%s'", video_id)
-        return None
+        log.info(
+            "No transcript found with youtube-transcript-api for video ID '%s', trying yt-dlp fallback",
+            video_id,
+        )
     except TranscriptsDisabled:
-        log.warning("Transcripts are disabled for video ID '%s'", video_id)
-        return None
+        log.info(
+            "Transcripts disabled with youtube-transcript-api for video ID '%s', trying yt-dlp fallback",
+            video_id,
+        )
     except Exception as e:
-        log.error("Error fetching transcript for video ID '%s': %s", video_id, e)
-        return None
+        log.warning(
+            "Error with youtube-transcript-api for video ID '%s': %s, trying yt-dlp fallback",
+            video_id,
+            e,
+        )
+
+    # Second try: yt-dlp fallback (slower but more robust)
+    try:
+        from yt_summarize_bot.yt_dlp_transcript import get_transcript_with_yt_dlp
+
+        log.info(
+            "Attempting transcript extraction with yt-dlp fallback for video ID '%s'", video_id
+        )
+        transcript = await get_transcript_with_yt_dlp(video_id)
+
+        if transcript:
+            log.info("Successfully fetched transcript using yt-dlp fallback")
+            return transcript  # type: ignore[no-any-return]
+        else:
+            log.warning("No transcript available using yt-dlp fallback for video ID '%s'", video_id)
+
+    except Exception as e:
+        log.error("Error with yt-dlp fallback for video ID '%s': %s", video_id, e)
+
+    # Both methods failed
+    log.warning("All transcript extraction methods failed for video ID '%s'", video_id)
+    return None
 
 
 def escape_markdown_v2(text: str) -> str:
