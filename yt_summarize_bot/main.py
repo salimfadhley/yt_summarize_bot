@@ -463,7 +463,7 @@ async def handle_message(message: types.Message) -> None:
 
     if "youtube.com" in url or "youtu.be" in url:
         log.info("Processing YouTube URL from user %s: %s", user_id, url)
-        status_msg = await message.answer("Reading the video...")
+        status_msg = await safe_send_message(message, "Reading the video...")
         transcript_text = await extract_youtube_transcript(url)
         if (
             "captions xml" in transcript_text.lower()
