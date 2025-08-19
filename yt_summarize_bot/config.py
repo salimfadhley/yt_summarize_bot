@@ -68,6 +68,11 @@ class Ai:
     API_URL = _get_optional_env_var("AI_API_URL", "https://text.pollinations.ai/openai")
 
 
+class YouTube:
+    # Optional cookie string for YouTube authentication
+    COOKIE_STRING = os.environ.get("YOUTUBE_COOKIE")
+
+
 class Database:
     DATABASE_TYPE = _get_optional_env_var(
         "DATABASE_TYPE",

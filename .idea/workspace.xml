@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="176dee3e-aa62-4121-a897-a0a7f710ea8e" name="Changes" comment="Implement logging configuration and enhance error handling for YouTube Summarizer Bot">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/__main__.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yt_summarize_bot/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/yt_summarize_bot/main.py" afterDir="false" />
-    </list>
+    <list default="true" id="176dee3e-aa62-4121-a897-a0a7f710ea8e" name="Changes" comment="Implement logging configuration and enhance error handling for YouTube Summarizer Bot" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -108,7 +104,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1755551395323</updated>
-      <workItem from="1755551396536" duration="8523000" />
+      <workItem from="1755551396536" duration="9287000" />
     </task>
     <task id="LOCAL-00001" summary="Update Docker configuration and refine Python version constraints in pyproject.toml">
       <option name="closed" value="true" />
@@ -141,6 +137,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/yt_summarize_bot$main.coverage" NAME="main Coverage Results" MODIFIED="1755560866524" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/yt_summarize_bot" />
-    <SUITE FILE_PATH="coverage/yt_summarize_bot$__main__.coverage" NAME="__main__ Coverage Results" MODIFIED="1755560874160" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/yt_summarize_bot" />
+    <SUITE FILE_PATH="coverage/yt_summarize_bot$__main__.coverage" NAME="__main__ Coverage Results" MODIFIED="1755562591798" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/yt_summarize_bot" />
   </component>
 </project>

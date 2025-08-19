@@ -16,7 +16,7 @@ from aiogram.filters import Command
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from yt_dlp.utils import DownloadError, ExtractorError
 
-from yt_summarize_bot.config import Ai, Telegram
+from yt_summarize_bot.config import Ai, Telegram, YouTube
 from yt_summarize_bot.constants import SUBTITLE_LANGUAGES
 from yt_summarize_bot.database import db
 from yt_summarize_bot.exceptions import (
@@ -28,6 +28,52 @@ from yt_summarize_bot.exceptions import (
 )
 
 log = logging.getLogger(__name__)
+
+
+def get_youtube_dl_options(include_postprocessors: bool = False) -> dict:
+    """Get yt-dlp options with optional cookie authentication."""
+    options = {
+        "skip_download": not include_postprocessors,
+        "writesubtitles": not include_postprocessors,
+        "writeautomaticsub": not include_postprocessors,
+        "subtitleslangs": SUBTITLE_LANGUAGES,
+        "outtmpl": "temp_sub.%(ext)s" if not include_postprocessors else "temp_audio.%(ext)s",
+        # Enhanced anti-bot detection measures
+        "http_headers": {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        },
+        # Additional options to avoid detection
+        "extractor_args": {"youtube": {"skip": ["dash", "hls"]}},
+        # Use slower extraction to avoid rate limiting
+        "sleep_interval": 1,
+        "max_sleep_interval": 5,
+    }
+
+    if include_postprocessors:
+        options.update(
+            {
+                "format": "bestaudio/best",
+                "postprocessors": [
+                    {
+                        "key": "FFmpegExtractAudio",
+                        "preferredcodec": "wav",
+                    }
+                ],
+                "keepvideo": False,
+            }
+        )
+
+    # Add cookies if available
+    if YouTube.COOKIE_STRING:
+        log.info("Using YouTube cookie for authentication")
+        # Write cookie to temporary file
+        import tempfile
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
+            f.write(YouTube.COOKIE_STRING)
+            options["cookiefile"] = f.name
+
+    return options
 
 
 def escape_markdown_v2(text: str) -> str:
@@ -217,17 +263,7 @@ def transcribe_audio_sync(audio_path: str, question: str = "Transcribe this audi
 
 async def extract_youtube_transcript(youtube_url: str) -> str:
     try:
-        ydl_opts = {
-            "skip_download": True,
-            "writesubtitles": True,
-            "writeautomaticsub": True,
-            "subtitleslangs": SUBTITLE_LANGUAGES,
-            "outtmpl": "temp_sub.%(ext)s",
-            # Add headers to avoid bot detection
-            "http_headers": {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-            },
-        }
+        ydl_opts = get_youtube_dl_options(include_postprocessors=False)
 
         loop = asyncio.get_event_loop()
 
@@ -277,21 +313,7 @@ async def extract_youtube_transcript(youtube_url: str) -> str:
 
 async def download_audio_and_transcribe(youtube_url: str) -> str:
     try:
-        ydl_opts = {
-            "format": "bestaudio/best",
-            "postprocessors": [
-                {
-                    "key": "FFmpegExtractAudio",
-                    "preferredcodec": "wav",
-                }
-            ],
-            "outtmpl": "temp_audio.%(ext)s",
-            "keepvideo": False,
-            # Add headers to avoid bot detection
-            "http_headers": {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-            },
-        }
+        ydl_opts = get_youtube_dl_options(include_postprocessors=True)
 
         loop = asyncio.get_event_loop()
 
