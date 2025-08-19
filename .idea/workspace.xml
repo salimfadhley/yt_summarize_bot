@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="176dee3e-aa62-4121-a897-a0a7f710ea8e" name="Changes" comment="Implement logging configuration and enhance error handling for YouTube Summarizer Bot">
-      <change afterPath="$PROJECT_DIR$/test_yt_summarize_bot/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/poetry.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yt_summarize_bot/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/yt_summarize_bot/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yt_summarize_bot/constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/yt_summarize_bot/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/yt_summarize_bot/main.py" afterDir="false" />
-    </list>
+    <list default="true" id="176dee3e-aa62-4121-a897-a0a7f710ea8e" name="Changes" comment="Enhance YouTube Summarizer Bot with improved logging, configuration, and environment setup" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,6 +59,9 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python tests.pytest in test_get_video_id.py.executor": "Run",
+    "Python tests.pytest in test_get_youtube_transcript.py.executor": "Run",
+    "Python tests.pytest in test_youtube_transcript.py.executor": "Run",
     "Python.__main__.executor": "Run",
     "Python.main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -81,10 +75,10 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
+    "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.3114572",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable",
     "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
   },
@@ -102,9 +96,72 @@
       <recent name="$PROJECT_DIR$/yt_summarize_bot" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python tests.pytest in test_get_video_id.py">
+    <configuration name="pytest in test_get_video_id.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="yt_summarize_bot" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test_yt_summarize_bot" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/src/test_yt_summarize_bot/test_get_video_id.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest in test_get_youtube_transcript.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="yt_summarize_bot" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test_yt_summarize_bot" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/src/test_yt_summarize_bot/test_get_youtube_transcript.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest in test_youtube_transcript.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="yt_summarize_bot" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test_yt_summarize_bot" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/src/test_yt_summarize_bot/test_youtube_transcript.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.__main__" />
+      <item itemvalue="Python tests.pytest in test_get_video_id.py" />
+      <item itemvalue="Python tests.pytest in test_get_youtube_transcript.py" />
+      <item itemvalue="Python tests.pytest in test_youtube_transcript.py" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.pytest in test_get_video_id.py" />
+        <item itemvalue="Python tests.pytest in test_get_youtube_transcript.py" />
+        <item itemvalue="Python tests.pytest in test_youtube_transcript.py" />
         <item itemvalue="Python.__main__" />
       </list>
     </recent_temporary>
@@ -123,7 +180,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1755551395323</updated>
-      <workItem from="1755551396536" duration="12839000" />
+      <workItem from="1755551396536" duration="13959000" />
     </task>
     <task id="LOCAL-00001" summary="Update Docker configuration and refine Python version constraints in pyproject.toml">
       <option name="closed" value="true" />
@@ -152,10 +209,14 @@
     <MESSAGE value="Refactor project structure and enhance development setup with Makefile and setup script" />
     <MESSAGE value="Add security scanning with Bandit and enhance CI/CD workflows" />
     <MESSAGE value="Implement logging configuration and enhance error handling for YouTube Summarizer Bot" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implement logging configuration and enhance error handling for YouTube Summarizer Bot" />
+    <MESSAGE value="Enhance YouTube Summarizer Bot with improved logging, configuration, and environment setup" />
+    <option name="LAST_COMMIT_MESSAGE" value="Enhance YouTube Summarizer Bot with improved logging, configuration, and environment setup" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/yt_summarize_bot$main.coverage" NAME="main Coverage Results" MODIFIED="1755560866524" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/yt_summarize_bot" />
+    <SUITE FILE_PATH="coverage/yt_summarize_bot$pytest_in_test_get_youtube_transcript_py.coverage" NAME="pytest in test_get_youtube_transcript.py Coverage Results" MODIFIED="1755567250665" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/test_yt_summarize_bot" />
+    <SUITE FILE_PATH="coverage/yt_summarize_bot$pytest_in_test_get_video_id_py.coverage" NAME="pytest in test_get_video_id.py Coverage Results" MODIFIED="1755567255356" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/test_yt_summarize_bot" />
     <SUITE FILE_PATH="coverage/yt_summarize_bot$__main__.coverage" NAME="__main__ Coverage Results" MODIFIED="1755565041263" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/yt_summarize_bot" />
+    <SUITE FILE_PATH="coverage/yt_summarize_bot$pytest_in_test_youtube_transcript_py.coverage" NAME="pytest in test_youtube_transcript.py Coverage Results" MODIFIED="1755566849308" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/test_yt_summarize_bot" />
   </component>
 </project>
